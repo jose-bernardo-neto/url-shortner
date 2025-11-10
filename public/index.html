@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            text-align: center;
+        }
+        input, button {
+            width: 300px;
+            padding: 10px;
+            margin: 10px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: green;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    <form id="url-form">
+        <input type="url" id="urlInput" placeholder="Enter your URL here" required>
+        <button onclick="shortenUrl()">Shorten URL</button>
+    </form>
+    <div id="shortened-url" class="result" style="display: none;">
+    </div>
+
+    <script>
+        async function shortenUrl() {
+            const url = document.getElementById("urlInput").value;
+            const response = await fetch('/shorten',{
+                method:'POST',
+                headers: {
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify({url})
+            })
+
+            const data = await response.json()
+
+            document.getElementById('result').innerHTML = `Shortened URL: <a href="${data.shortUrl}" target="_blank">${data.shortUrl}</a>`
+        }
+    </script>
+</body>
+</html>
